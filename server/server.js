@@ -9,9 +9,9 @@ const API_KEY = process.env.FLICKR_API_KEY;
 let flickr = new Flickr(API_KEY);
 
 app.get('/data', (req, res) => {
-  console.log('REQUEST!!!!!!!!!!!!!!!!!!!!', Object.keys(req));
   const page = req.query['0'];
-  console.log('PAGE', page);
+
+  // search method was chosen in order to avoid inappropriate images
   flickr.photos
     .search({
       tags: 'forest',
