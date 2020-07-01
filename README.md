@@ -10,4 +10,4 @@ A responsive single-page Image App which provide an infinite scroll experience.
 
 1. download
 2. install all dependencies in client and server sides
-3. in root directory run `cd server` and `npm run dev`
+3. in root directory run `cd ./server` and `npm run dev`
