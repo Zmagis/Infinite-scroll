@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 
 import ImageBox from './imageBox/ImageBox';
+import { removedDuplicates } from './utils';
 
 function App() {
   const [data, setData] = useState([]);
@@ -14,9 +15,9 @@ function App() {
     axios
       .get('/data', { params: page })
       .then((response) => {
-        let arr = JSON.parse(response.data.text);
-        let newA = arr.photos.photo;
-        setData((prev) => [...prev, ...newA]);
+        const arr = JSON.parse(response.data.text).photos.photo;
+        const newA = [...data, ...arr];
+        setData([...removedDuplicates(newA)]);
         setLoading(false);
       })
       .catch((err) => {
@@ -24,11 +25,12 @@ function App() {
       });
   }, [page]);
 
-  const handleSort = () => {
-    let sortedArr = data.sort((a, b) => (a.title > b.title ? 1 : -1));
+  const handleSort = useCallback(() => {
+    const sortedArr = data.sort((a, b) => (a.title > b.title ? 1 : -1));
     setData(sortedArr);
     setIsSorted(true);
-  };
+  }, [data]);
+
   useEffect(() => {
     if (isSorted) {
       handleSort();

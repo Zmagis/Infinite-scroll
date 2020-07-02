@@ -6,7 +6,7 @@ require('dotenv').config();
 const app = express();
 const API_KEY = process.env.FLICKR_API_KEY;
 
-let flickr = new Flickr(API_KEY);
+const flickr = new Flickr(API_KEY);
 
 app.get('/data', (req, res) => {
   const page = req.query['0'];
