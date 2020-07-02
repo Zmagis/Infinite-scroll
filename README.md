@@ -10,4 +10,5 @@ A responsive single-page Image App which provide an infinite scroll experience.
 
 1. download
 2. install all dependencies in client and server sides
-3. in root directory run `cd ./server` and `npm run dev`
+3. in server directory add .env file with your own FLICKR_API_KEY
+4. in root directory run `cd ./server` and `npm run dev`
