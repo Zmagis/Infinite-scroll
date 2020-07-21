@@ -10,33 +10,26 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [isSorted, setIsSorted] = useState(false);
 
+  const getImages = async () => {
+    const res = await axios.get('/data', { params: page });
+    const json = JSON.parse(res.data.text).photos.photo;
+    const newA = [...data, ...json];
+    setData([...removedDuplicates(newA)]);
+    setLoading(false);
+  };
+
   useEffect(() => {
     setLoading(true);
-    axios
-      .get('/data', { params: page })
-      .then((response) => {
-        const arr = JSON.parse(response.data.text).photos.photo;
-        const newA = [...data, ...arr];
-        setData([...removedDuplicates(newA)]);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getImages();
   }, [page]);
 
   const handleSort = useCallback(() => {
-    const sortedArr = data.sort((a, b) => (a.title > b.title ? 1 : -1));
-    setData(sortedArr);
-    setIsSorted(true);
-  }, [data]);
-
-  useEffect(() => {
-    if (isSorted) {
-      handleSort();
-      setIsSorted(false);
+    if (!isSorted) {
+      const sortedArr = data.sort((a, b) => (a.title > b.title ? 1 : -1));
+      setData(sortedArr);
+      setIsSorted(true);
     }
-  }, [isSorted, handleSort]);
+  }, [data, isSorted]);
 
   return (
     <div className="App">
@@ -47,7 +40,13 @@ function App() {
           onClick={handleSort}
         ></i>
       </h1>
-      <ImageBox data={data} page={page} setPage={setPage} loading={loading} />
+      <ImageBox
+        data={data}
+        page={page}
+        setPage={setPage}
+        loading={loading}
+        setIsSorted={setIsSorted}
+      />
     </div>
   );
 }

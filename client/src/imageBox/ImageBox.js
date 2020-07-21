@@ -2,11 +2,12 @@ import React from 'react';
 
 import Image from './Image';
 
-const ImageBox = ({ data, setPage, loading }) => {
+const ImageBox = ({ data, setPage, loading, setIsSorted }) => {
   const handleScroll = (e) => {
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
     if (Math.floor(scrollHeight - scrollTop) === clientHeight) {
       setPage((prev) => prev + 1);
+      setIsSorted(false);
     }
   };
 
